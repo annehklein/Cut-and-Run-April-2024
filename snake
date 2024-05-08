@@ -1,0 +1,118 @@
+barcode = ["1_22KM7GLT3_ATCACG","2_22KM7GLT3_CGATGT","3_22KM7GLT3_TTAGGC","4_22KM7GLT3_TGACCA","5_22KM7GLT3_ACAGTG", "6_22KM7GLT3_GCCAAT","7_22KM7GLT3_CAGATC","8_22KM7GLT3_ACTTGA","9_22KM7GLT3_GATCAG","10_22KM7GLT3_TAGCTT","11_22KM7GLT3_GGCTAC","12_22KM7GLT3_CTTGTA","13_22KM7GLT3_AGTCAA","14_22KM7GLT3_AGTTCC","15_22KM7GLT3_ATGTCA","16_22KM7GLT3_CCGTCC","17_22KM7GLT3_GTCCGC","18_22KM7GLT3_GTGAAA","19_22KM7GLT3_GTGGCC","20_22KM7GLT3_GTTTCG"]
+read_qual=20
+
+rule all:
+    input:
+        expand('reads/{barcode}_L003_R1.fastq.gz', barcode=barcode),
+        expand('reads/{barcode}_L003_R2.fastq.gz', barcode=barcode),
+        expand('data/{barcode}_R1.filt.fastq', barcode=barcode),
+        expand('data/{barcode}_R2.filt.fastq', barcode=barcode)
+
+
+rule qual_filt:
+    input:
+        r1='reads/{barcode}_L003_R1.fastq.gz',
+        r2='reads/{barcode}_L003_R2.fastq.gz'
+    output:
+        out1='data/{barcode}_R1.filt.fastq',
+        out2='data/{barcode}_R2.filt.fastq'
+    threads: 5
+    shell:
+        "bbduk.sh in1={input.r1} in2={input.r2} out1={output.out1} out2={output.out2} maq={read_qual}"
+
+
+rule alignement_ref:
+	input:
+		r1='/scratch3/kle065/CMRI/Mawj/AGRF_April_2024/data/{barcode}_R1.filt.fastq', 
+        r2='/scratch3/kle065/CMRI/Mawj/AGRF_April_2024/data/{barcode}_R2.filt.fastq',
+        index='/scratch3/kle065/CMRI/Mawj/AGRF_April_2024/reference/E_Coli_GRCh38_no_al.fa'
+	output:
+		sam='/scratch3/kle065/CMRI/Mawj/AGRF_April_2024/data/{barcode}_GRCh38.sam',
+        log='/scratch3/kle065/CMRI/Mawj/AGRF_April_2024/data/bowtie2_{barcode}_GRCh38.log'
+	shell:
+		"""
+        module load bowtie
+		bowtie2 -p 2 -q --local -x {input.index} -1 {input.r1} -2 {input.r2} -S {output.sam} 2> {output.log}
+		"""
+
+rule bam_to_sam:
+    input:
+        infile='data/{barcode}_GRCh38.sam'
+    output:
+        outfile='data/{barcode}_GRCh38.bam'
+    shell:
+        "samtools view -S -b {input.infile} > {output.outfile} "
+
+
+rule sort_sam:
+    input:
+        in_file='data/{barcode}_GRCh38.bam'
+    output:
+        sorted_bam='data/{barcode}_GRCh38_sorted.bam',
+    shell:
+        "samtools sort {input.in_file} -o {output.sorted_bam}"
+
+
+rule unmapped:
+    input:
+        in1='data/{barcode}_GRCh38_sorted.bam'
+    output:
+        out1='data/{barcode}_GRCh38_final.bam'
+    shell:
+        "sambamba view -h -t 2 -f bam -F '[XS] == null and not unmapped and not duplicate' {input.in1} > {output.out1}"
+
+
+rule blacklist:
+    input:
+        in1='data/{barcode}_GRCh38_final.bam'
+    output:
+        out1='data/{barcode}_GRCh38_blacklist_filtered.bam'
+    shell:
+        "bedtools intersect -v -abam {input.in1} -b mm10-blacklist.v2.bed > {output.out1}"
+
+rule index_reads:
+    input:
+        bam = 'data/{barcode}_GRCh38_blacklist_filtered.bam'
+    output:
+        bai = 'data/{barcode}_GRCh38_blacklist_filtered.bam.bai'
+    shell:
+        """
+        samtools index {input.bam}
+        """
+rule Count_reads:
+    input:
+        in1='data/{barcode}_GRCh38_blacklist_filtered.bam'
+    output:
+        out1='data/{barcode}_ecoli_read_count.txt'
+    shell:
+        "samtools view -c -F 260 {input.in1} NC_000913.3 > {output.out1}"
+
+
+rule calculate_normalization:
+    input:
+        in1='data/{barcode}_ecoli_read_count.txt'
+    output:
+        out1='data/{barcode}_scale_factor.txt'
+    script:
+        'calculate_normalization.py'
+
+rule bigW:
+    input:
+        bam='data/{barcode}_GRCh38_blacklist_filtered.bam'
+        scale='data/{barcode}_scale_factor.txt'
+    output:
+        bw='results/{barcode}_chip.bw'
+    shell:
+        """
+        ./deepTools/bin/bamCoverage -b {input.bam} -o {output.bw} --binSize 20 --scaleFactor {input.scale}
+        """
+
+
+rule macs2:
+    input:
+        in1='data/{barcode}_GRCh38_blacklist_filtered.bam'
+        in2='data/{barcode}_GRCh38_blacklist_filtered.bam'
+    output:
+        out1='data/{barcode}_normalization_factors.txt'
+    script:
+        macs2 callpeak -t {input.in1} -c {input.in2} -f BAMPE -g hs -n {barcode} --outdir results
