@@ -1,5 +1,3 @@
-# Cut-and-Run-April-2024
-
 # Cut and run analysis
 
 Analysis of Mawj's cut and run data.
@@ -214,9 +212,9 @@ norm_factors = average_ecoli_count /count in ecoli_read_counts
 
 [ChromHMM](https://csiroau-my.sharepoint.com/:f:/r/personal/kle065_csiro_au/Documents/CMRI%20projects/Mawj/Cut%20and%20Run%20April%202024/ChromHMM?csf=1&web=1&e=Go7TbX)
 
-[bigWig files]()
+[bigWig files](https://csiroau-my.sharepoint.com/:f:/r/personal/kle065_csiro_au/Documents/CMRI%20projects/Mawj/Cut%20and%20Run%20April%202024/results?csf=1&web=1&e=Pc6v8E)
 
-[bigWig - IgG]()
+[bigWig - IgG](https://csiroau-my.sharepoint.com/:f:/r/personal/kle065_csiro_au/Documents/CMRI%20projects/Mawj/Cut%20and%20Run%20April%202024/results?csf=1&web=1&e=Pc6v8E)
 
 
 
