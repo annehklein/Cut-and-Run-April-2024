@@ -1,4 +1,4 @@
-# Cut and run analysis
+![image](https://github.com/user-attachments/assets/1b5695aa-61df-483e-bec2-29325a2b62ac)![image](https://github.com/user-attachments/assets/8e5c8943-f760-4f98-a28f-d1efa8974e63)# Cut and run analysis
 
 Analysis of Mawj's cut and run data.
 
@@ -184,28 +184,28 @@ norm_factors = average_ecoli_count /count in ecoli_read_counts
 
 # Align against GRCh38 and E.coli
 
-|**Sample ID**	|**Index (i7) barcode**	|**Overall alignement (%)**	|**Number of reads aligned to E.coli**	|**Normalisation factor** 	|
-|:-----------|:-----------|:-----------|:-----------|:-----------
-|OTC #3 P0 H3K27Ac	|ATCACG|	99.6|	145800	|18.6388|
-|OTC #3 P0 H3K27me3|	CGATGT|	99.59|	133275|	20.3904|
-|OTC #3 P0 H3K4me3|	TTAGGC	|99.32	|37710	|72.064|
-|OTC #3 P0 IgG	|TGACCA|	99.55|	191892	|14.1618|
-|OTC #3 P1 H3K27Ac	|ACAGTG	|96.75	|1624459|	1.6729|
-|OTC #3 P1 H3K27me3	| GCCAAT	|97.8	|297255	|9.1421|
-|OTC #3 P1 H3K4me3	|CAGATC	|91.44|	5529812|	0.4914|
-|OTC #3 P1 IgG|	ACTTGA|	94.94|	7980688|	0.3405|
-|OTC #3 P2 H3K27Ac|	GATCAG	|94.68|	661148	|4.1103|
-|OTC #3 P2 H3K27me3|	TAGCTT|	95.7|	132118	|20.569|
-|OTC #3 P2 H3K4me3	|GGCTAC	|91.23|	4087586	|0.6648|
-|OTC #3 P2 IgG|	CTTGTA|	93.1|	2559729|	1.0616|
-|FRG #458+FRG 166 H3K27Ac|	AGTCAA	|91.21|	419196|	6.4827|
-|FRG #458+FRG 166 H3K27me3|	AGTTCC|	89.4|	166818|	16.2904|
-|FRG #458+FRG 166 H3K4me3	|ATGTCA|	83.33|	4048658	|0.6712|
-|FRG #458+FRG 166 IgG|	CCGTCC|	84.17|	3905827	|0.6958|
-|FRG #474+FRG#182 H3K27Ac|	GTCCGC|	92.01|	1701344	|1.5973|
-|FRG #474+FRG#182 H3K27me3|	GTGAAA	|91.45|	692115|	3.9264|
-|FRG #474+FRG#182 H3K4me3|	GTGGCC|	83.65|	12723918|	0.2136|
-|FRG #474+FRG#182 IgG|	GTTTCG|	84.88|	7311358|	0.3717|
+|**Sample ID**	|**Index (i7) barcode**	|**Overall alignement (%)**	|**Number of reads aligned to E.coli**	|**Normalisation factor** 	|** Number of reads aligning agaisnt X chromosome** |
+|:-----------|:-----------|:-----------|:-----------|:-----------|:-----------
+|OTC #3 P0 H3K27Ac	|ATCACG|	99.6|	145800	|18.6388|2699364|
+|OTC #3 P0 H3K27me3|	CGATGT|	99.59|	133275|	20.3904|3913455|
+|OTC #3 P0 H3K4me3|	TTAGGC	|99.32	|37710	|72.064|504265|
+|OTC #3 P0 IgG	|TGACCA|	99.55|	191892	|14.1618|2937105|
+|OTC #3 P1 H3K27Ac	|ACAGTG	|96.75	|1624459|	1.6729|1741714|
+|OTC #3 P1 H3K27me3	| GCCAAT	|97.8	|297255	|9.1421|4100476|
+|OTC #3 P1 H3K4me3	|CAGATC	|91.44|	5529812|	0.4914|2126629|
+|OTC #3 P1 IgG|	ACTTGA|	94.94|	7980688|	0.3405|2007048|
+|OTC #3 P2 H3K27Ac|	GATCAG	|94.68|	661148	|4.1103|1830181|
+|OTC #3 P2 H3K27me3|	TAGCTT|	95.7|	132118	|20.569|3895655|
+|OTC #3 P2 H3K4me3	|GGCTAC	|91.23|	4087586	|0.6648|2180552|
+|OTC #3 P2 IgG|	CTTGTA|	93.1|	2559729|	1.0616|2692173|
+|FRG #458+FRG 166 H3K27Ac|	AGTCAA	|91.21|	419196|	6.4827|1537297|
+|FRG #458+FRG 166 H3K27me3|	AGTTCC|	89.4|	166818|	16.2904|4824740|
+|FRG #458+FRG 166 H3K4me3	|ATGTCA|	83.33|	4048658	|0.6712|2321623|
+|FRG #458+FRG 166 IgG|	CCGTCC|	84.17|	3905827	|0.6958|2183303|
+|FRG #474+FRG#182 H3K27Ac|	GTCCGC|	92.01|	1701344	|1.5973|1353419|
+|FRG #474+FRG#182 H3K27me3|	GTGAAA	|91.45|	692115|	3.9264|4159333|
+|FRG #474+FRG#182 H3K4me3|	GTGGCC|	83.65|	12723918|	0.2136|2271391|
+|FRG #474+FRG#182 IgG|	GTTTCG|	84.88|	7311358|	0.3717|2051329|
 
 # Results
 [MACS2](https://csiroau-my.sharepoint.com/:f:/r/personal/kle065_csiro_au/Documents/CMRI%20projects/Mawj/Cut%20and%20Run%20April%202024/results?csf=1&web=1&e=dsjYC5)
